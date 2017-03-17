@@ -26,14 +26,14 @@ def points():
     #This clears the terminal
     os.system('cls')
     #This shows the points available
-    print("Points available: ", heroIG.points)
+    print("Attribute points available: ", heroIG.points)
     #\n is a break (like an enter)
     print("What would you like to level up:\n1.) Strength")
     option = input('--> ')
     #If you have less than or equal to 0 points:
     if heroIG.points <= 0:
         os.system('cls')
-        print("You don't have enough points!")
+        print("You don't have enough attribute points!")
         #This is just a pause, waiting for the player to press enter
         option = input('')
         #Redirects to the beginning of points
