@@ -63,7 +63,7 @@ def points():
     #Attributes do not yet give bonuses because we need to decide on them
     os.system('cls')
     print("Points available: ", heroIG.points)
-    print("What would you like to level up:\n1.) Strength\n2.) Dexterity\n3.) Charisma\n4.) Intelligence\n5.) Intuition\n6.) Vitality\n7.) Luck\n8.) Precision\n9.) **Magic**\n\n0.) Exit\n\np.) Increase points\ns.) Stats")
+    print("What would you like to level up:\n1.) Strength\n2.) Dexterity\n3.) Charisma\n4.) Intelligence\n5.) Intuition\n6.) Vitality\n7.) Luck\n8.) Precision\n9.) **Magic**\n\n0.) Exit\n\np.)  points\ns.) Stats")
     option = input('--> ')
     #Exit
     if option == "0":
@@ -77,11 +77,19 @@ def points():
     #Strength
     elif option == "1":
         os.system('cls')
-        heroIG.strP += 1
-        heroIG.points -= 1
-        print("You have increased Strength!")
-        option = input('')
-        points()
+        print("How many points do you want to increase Strength by? You have", heroIG.points,  "points")
+        amtP = int(input('--> '))
+        if amtP <= heroIG.points:
+            heroIG.strP += amtP
+            heroIG.points -= amtP
+            print("You have increased Strength by ", amtP, "points!")
+            option = input('')
+            points()
+        else:
+            os.system('cls')
+            print("Thats too much!")
+            option = input('')
+            points()
     #Dexterity
     elif option == "2":
         os.system('cls')
