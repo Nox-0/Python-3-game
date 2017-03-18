@@ -40,7 +40,7 @@ class hero:
         #Vitality
         self.vitP = 0
         #Luck
-        self.lucP = 0
+        self.lukP = 0
         #Precision
         self.prcP = 0
         #Magic **RENAME**
@@ -63,7 +63,7 @@ def points():
     #Attributes do not yet give bonuses because we need to decide on them
     os.system('cls')
     print("Points available: ", heroIG.points)
-    print("What would you like to level up:\n1.) Strength\n2.) Dexterity\n3.) Charisma\n4.) Intelligence\n5.) Intuition\n6.) Vitality\n7.) Luck\n8.) Precision\n9.) **Magic**\n\n0.) Exit\n\np.)  points\ns.) Stats")
+    print("What would you like to level up:\n1.) Strength\n2.) Dexterity\n3.) Charisma\n4.) Intelligence\n5.) Intuition\n6.) Vitality\n7.) Luck\n8.) Precision\n9.) **Magic**\n\n0.) Exit\n\np.) Increase points\ns.) Stats")
     option = input('--> ')
     #Exit
     if option == "0":
@@ -74,86 +74,237 @@ def points():
         print("You don't have enough points!")
         option = input('')
         points()
+
     #Strength
     elif option == "1":
         os.system('cls')
-        print("How many points do you want to increase Strength by? You have", heroIG.points,  "points")
-        amtP = int(input('--> '))
+        #Will loop infinitely until a number is inputted.
+        while True:
+            try:
+                print("Points Available: ", heroIG.points)
+                print("How many points do you want to increase Strength by?")
+                amtP = int(input('--> '))
+                break
+        #Insert string gives exception error. except will intercept it and it will continue to loop around.
+            except:
+                os.system('cls')
+
         if amtP <= heroIG.points:
             heroIG.strP += amtP
             heroIG.points -= amtP
-            print("You have increased Strength by ", amtP, "points!")
+            os.system('cls')
+            print("You have increased Strength by", amtP,"points!")
+            print("Points left:", heroIG.points)
             option = input('')
             points()
         else:
             os.system('cls')
-            print("Thats too much!")
+            print("That\'s too much!")
             option = input('')
             points()
+
     #Dexterity
     elif option == "2":
         os.system('cls')
-        heroIG.dexP += 1
-        heroIG.points -= 1
-        print("You have increased Dexterity!")
-        option = input('')
-        points()
+        while True:
+            try:
+                print("Points Available: ", heroIG.points)
+                print("How many points do you want to increase Dexterity by?")
+                amtP = int(input('--> '))
+                break
+            except:
+                os.system('cls')
+
+        if amtP <= heroIG.points:
+            heroIG.dexP += amtP
+            heroIG.points -= amtP
+            os.system('cls')
+            print("You have increased Dexterity by", amtP,"points!")
+            print("Points left:", heroIG.points)
+            option = input('')
+            points()
+        else:
+            os.system('cls')
+            print("That\'s too much!")
+            option = input('')
+            points()
+
     #Charisma
     elif option == "3":
         os.system('cls')
-        heroIG.chaP += 1
-        heroIG.points -= 1
-        print("You have increased Charisma!")
-        option = input('')
-        points()
+        while True:
+            try:
+                print("Points Available: ", heroIG.points)
+                print("How many points do you want to increase Charisma by?")
+                amtP = int(input('--> '))
+                break
+            except:
+                os.system('cls')
+
+        if amtP <= heroIG.points:
+            heroIG.chaP += amtP
+            heroIG.points -= amtP
+            os.system('cls')
+            print("You have increased Charisma by", amtP,"points!")
+            print("Points left:", heroIG.points)
+            option = input('')
+            points()
+        else:
+            os.system('cls')
+            print("That\'s too much!")
+            option = input('')
+            points()
+
     #Intelligence
     elif option == "4":
         os.system('cls')
-        heroIG.intelP += 1
-        heroIG.points -= 1
-        print("You have increased Intelligence!")
-        option = input('')
-        points()
+        while True:
+            try:
+                print("Points Available: ", heroIG.points)
+                print("How many points do you want to increase Intelligece by?")
+                amtP = int(input('--> '))
+                break
+            except:
+                os.system('cls')
+
+        if amtP <= heroIG.points:
+            heroIG.intelP += amtP
+            heroIG.points -= amtP
+            os.system('cls')
+            print("You have increased Intelligence by", amtP,"points!")
+            print("Points left:", heroIG.points)
+            option = input('')
+            points()
+        else:
+            os.system('cls')
+            print("That\'s too much!")
+            option = input('')
+            points()
     #Intuition
     elif option == "5":
         os.system('cls')
-        heroIG.intuiP += 1
-        heroIG.points -= 1
-        print("You have increased Intuition!")
-        option = input('')
-        points()
+        while True:
+            try:
+                print("Points Available: ", heroIG.points)
+                print("How many points do you want to increase Intuition by?")
+                amtP = int(input('--> '))
+                break
+            except:
+                os.system('cls')
+
+        if amtP <= heroIG.points:
+            heroIG.intuiP += amtP
+            heroIG.points -= amtP
+            os.system('cls')
+            print("You have increased Intuition by", amtP,"points!")
+            print("Points left:", heroIG.points)
+            option = input('')
+            points()
+        else:
+            os.system('cls')
+            print("That\'s too much!")
+            option = input('')
+            points()
     #Vitality
     elif option == "6":
         os.system('cls')
-        heroIG.vitP += 1
-        heroIG.points -= 1
-        print("You have increased Vitality")
-        option = input('')
-        points()
+        while True:
+            try:
+                print("Points Available: ", heroIG.points)
+                print("How many points do you want to increase Vitality by?")
+                amtP = int(input('--> '))
+                break
+            except:
+                os.system('cls')
+
+        if amtP <= heroIG.points:
+            heroIG.vitP += amtP
+            heroIG.points -= amtP
+            os.system('cls')
+            print("You have increased Vitality by", amtP,"points!")
+            print("Points left:", heroIG.points)
+            option = input('')
+            points()
+        else:
+            os.system('cls')
+            print("That\'s too much!")
+            option = input('')
+            points()
     #Luck
     elif option == "7":
         os.system('cls')
-        heroIG.lucP += 1
-        heroIG.points -= 1
-        print("You have increased Luck")
-        option = input('')
-        points()
+        while True:
+            try:
+                print("Points Available: ", heroIG.points)
+                print("How many points do you want to increase Luck by?")
+                amtP = int(input('--> '))
+                break
+            except:
+                os.system('cls')
+
+        if amtP <= heroIG.points:
+            heroIG.lukP += amtP
+            heroIG.points -= amtP
+            os.system('cls')
+            print("You have increased Luck by", amtP,"points!")
+            print("Points left:", heroIG.points)
+            option = input('')
+            points()
+        else:
+            os.system('cls')
+            print("That\'s too much!")
+            option = input('')
+            points()
     #Precision
     elif option == "8":
         os.system('cls')
-        heroIG.prcP += 1
-        heroIG.points -= 1
-        print("You have increased Precision")
-        option = input('')
-        points()
+        while True:
+            try:
+                print("Points Available: ", heroIG.points)
+                print("How many points do you want to increase Precision by?")
+                amtP = int(input('--> '))
+                break
+            except:
+                os.system('cls')
+
+        if amtP <= heroIG.points:
+            heroIG.prcP += amtP
+            heroIG.points -= amtP
+            os.system('cls')
+            print("You have increased Precision by", amtP,"points!")
+            print("Points left:", heroIG.points)
+            option = input('')
+            points()
+        else:
+            os.system('cls')
+            print("That\'s too much!")
+            option = input('')
+            points()
     #Magic **RENAME**
     elif option == "9":
         os.system('cls')
-        heroIG.mgcP += 1
-        heroIG.points -= 1
-        print("You have increased Magic")
-        option = input('')
-        points()
+        while True:
+            try:
+                print("Points Available: ", heroIG.points)
+                print("How many points do you want to increase Magic by?")
+                amtP = int(input('--> '))
+                break
+            except:
+                os.system('cls')
+
+        if amtP <= heroIG.points:
+            heroIG.mgcP += amtP
+            heroIG.points -= amtP
+            os.system('cls')
+            print("You have increased Magic by", amtP,"points!")
+            print("Points left:", heroIG.points)
+            option = input('')
+            points()
+        else:
+            os.system('cls')
+            print("That\'s too much!")
+            option = input('')
+            points()
     #View your stats
     elif option == "s":
         stats()
@@ -162,6 +313,7 @@ def points():
         heroIG.points += 1
         points()
     else:
+        os.system('cls')
         points()
 
 
@@ -183,7 +335,7 @@ def stats():
     print("Intelligence: %i" % heroIG.intelP)
     print("Intuition: %i" % heroIG.intuiP)
     print("Vitality: %i" % heroIG.vitP)
-    print("Luck: %i" % heroIG.lucP)
+    print("Luck: %i" % heroIG.lukP)
     print("Precision: %i" % heroIG.prcP)
     print("**Magic**: %i" % heroIG.mgcP)
     print("")
