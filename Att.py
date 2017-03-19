@@ -99,7 +99,7 @@ def points():
             points()
         else:
             os.system('cls')
-            print("That\'s too much!")
+            print("You don\'t have enough points!")
             option = input('')
             points()
 
@@ -125,7 +125,7 @@ def points():
             points()
         else:
             os.system('cls')
-            print("That\'s too much!")
+            print("You don\'t have enough points!")
             option = input('')
             points()
 
@@ -151,7 +151,7 @@ def points():
             points()
         else:
             os.system('cls')
-            print("That\'s too much!")
+            print("You don\'t have enough points!")
             option = input('')
             points()
 
@@ -177,7 +177,7 @@ def points():
             points()
         else:
             os.system('cls')
-            print("That\'s too much!")
+            print("You don\'t have enough points!")
             option = input('')
             points()
     #Intuition
@@ -202,7 +202,7 @@ def points():
             points()
         else:
             os.system('cls')
-            print("That\'s too much!")
+            print("You don\'t have enough points!")
             option = input('')
             points()
     #Vitality
@@ -227,7 +227,7 @@ def points():
             points()
         else:
             os.system('cls')
-            print("That\'s too much!")
+            print("You don\'t have enough points!")
             option = input('')
             points()
     #Luck
@@ -252,7 +252,7 @@ def points():
             points()
         else:
             os.system('cls')
-            print("That\'s too much!")
+            print("You don\'t have enough points!")
             option = input('')
             points()
     #Precision
@@ -277,7 +277,7 @@ def points():
             points()
         else:
             os.system('cls')
-            print("That\'s too much!")
+            print("You don\'t have enough points!")
             option = input('')
             points()
     #Magic **RENAME**
@@ -302,7 +302,7 @@ def points():
             points()
         else:
             os.system('cls')
-            print("That\'s too much!")
+            print("You don\'t have enough points!")
             option = input('')
             points()
     #View your stats
@@ -354,3 +354,4 @@ def stats():
 
 
 main()
+
