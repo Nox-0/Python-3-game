@@ -8,16 +8,16 @@ class hero:
     def __init__(self, name):
         self.name = name
         self.lvl = 1
-        self.maxhealth = 100
+        self.maxhealth = 150
         self.health = self.maxhealth
         self.maxstamina = 20
         self.stamina = self.maxstamina
         self.maxmana = 20
         self.mana = self.maxmana
         self.weak = "matk"
-        self.patk = 1.1
-        self.matk = 10
-        self.crm = 2
+        self.patk = 35
+        self.matk = 25
+        self.crm = 1.1
         self.pdef = 10
         self.mdef = 5
         self.strP = 0
@@ -34,16 +34,17 @@ class hero:
 class GoblinKing:
     def __init__(self, name):
         self.name = name
-        self.maxhealth = 250
+        self.maxhealth = 200
         self.health = self.maxhealth
         self.maxstamina = 20
         self.stamina = self.maxstamina
         self.maxmana = 20
         self.mana = self.maxmana
+        self.crm = 1.5
         self.patk = 20
         self.matk = 10
         self.weak = "patk"
-        self.pdef = 5
+        self.pdef = 1
         self.mdef = 5
 goblinKing = GoblinKing("Goblin King")
 
@@ -51,14 +52,14 @@ def setup():
     os.system('cls')
     print("You are about to face the wicked Goblin King.")
     #console will pause for 2 seconds.
-    time.sleep(2)
+    #time.sleep(2)
     print("What is your name, hero?")
     nameChoice = input("--> ")
     global heroP
     heroP = hero(nameChoice)
     os.system('cls')
     print("Well then, %s, Good luck on your battle." % heroP.name)
-    time.sleep(2)
+    #time.sleep(2)
     prefight()
 
 def prefight():
@@ -82,13 +83,13 @@ def heroturn():
     os.system('cls')
 
     print("%s                     vs            %s" % (heroP.name, boss.name))
-    print("%s\'s Health: %d/%d                 %s\'s Health: %d/%d" % (heroP.name, heroP.health, heroP.maxhealth, boss.name, boss.health, boss.maxhealth))
+    print("Health: %d/%d                           Health: %d/%d" % (heroP.health, heroP.maxhealth, boss.health, boss.maxhealth))
     print("Stamina: %i/%i                           Stamina: %i/%i" % (heroP.stamina, heroP.maxstamina, boss.stamina, boss.maxstamina))
     print("Mana: %i/%i                              Mana: %i/%i" % (heroP.mana, heroP.maxmana, boss.mana, boss.maxmana))
     print("\n1.) Physical Attack")
     print("2.) Magic Attack")
     #new mechanic: defending. Will see a little bit down further. NOT READY YET.
-    print("3.) Defend")
+    print("3.) Defend [DOESNT DO ANYTHING ATM]")
 
     print("\n0.) Run")
     #temp for testing purposes
@@ -104,68 +105,75 @@ def heroturn():
     elif(option == "3"):
         os.system('cls')
         herodef()
-    elif(option == "4"):
+    elif(option == "0"):
         os.system('cls')
         run()
     elif(option == "9"):
         os.system('cls')
         print("Goodbye.")
+        input()
         sys.exit()
     else:
-        pass
+        heroturn()
 
 def heropatk():
     heroP.stamina -= 2
     crit = random.randint(1, 5)
-    hatk = random.randint(math.floor(heroP.patk/2), (heroP.patk))
+    hatk = random.randint(math.floor((heroP.patk)/2), (heroP.patk))
     #This version weakness and crit multiplier happens after the initial damage roll.
     if(boss.weak == "patk"):
         hatk *= 0.2
 
     if(crit == 1):
-        hatk = hatk * heroP.crm
+        hatk = math.ceil((hatk+(hatk*heroP.crm)))
         print("Critical Hit!")
         time.sleep(1)
+
+    hatk -= boss.pdef
     #This is incase the hatk is too low
-    if (hatk - boss.pdef <= 0):
+    if (hatk <= 0):
         print("You dealt 0 damage!")
+        input()
         bossturn()
-
-    boss.health -= hatk
-    print("You dealt %s damage to the %s" % (str(patk), boss.name))
-
-    if(boss.health <= 0):
-        victory()
     else:
-        while(heroP.stamina != heroP.maxstamina):
-            heroP.stamina += 1
-        bossturn()
+        boss.health -= hatk
+        print("You dealt %s damage to the %s" % (str(hatk), boss.name))
+        input()
+
+        if(boss.health <= 0):
+            victory()
+        else:
+            bossturn()
 
 
 def heromatk():
     crit = random.randint(1, 5)
     hatk = random.randint(math.floor(heroP.matk/2), (heroP.matk))
-    if(boss.weak == "patk"):
+    if(boss.weak == "matk"):
         hatk *= 0.2
         print("It's super effective!")
         time.sleep(1)
 
     if(crit == 1):
-        hatk = hatk * heroP.crm
+        hatk = math.ceil((hatk+(hatk*heroP.crm)))
         print("Critical Hit!")
         time.sleep(1)
 
-    if (hatk - boss.mdef <= 0):
+    hatk -= boss.mdef
+
+    if (hatk <= 0):
         print("You dealt 0 damage!")
+        input()
         bossturn()
-
-    boss.health -= hatk
-    print("You dealt %s damage to the %s" % (str(hatk), boss.name))
-
-    if(boss.health <= 0):
-        victory()
     else:
-        bossturn()
+        boss.health -= hatk
+        print("You dealt %s damage to the %s" % (str(hatk), boss.name))
+        input()
+
+        if(boss.health <= 0):
+            victory()
+        else:
+            bossturn()
 
 def herodef():
     heroturn()
@@ -174,17 +182,236 @@ def bossturn():
     #Moveset: patk, matk, lifesteal(patk), magic bolts(matk)
     #lifesteal will steal x% of current health
     #Magic bolts will deal x amount of damage x times.
+    os.system('cls')
+    #If somehow the boss does not have any stamina or mana remaining.
+    if(boss.stamina <=1 and boss.mana <=1):
+        print("The boss couldn't do anything!")
+        input()
+        while(boss.stamina != boss.maxstamina):
+            boss.stamina += 1
+        while(boss.mana != boss.maxmana):
+            boss.mana +=1
+
+        heroturn()
+
     bossOption = random.randint(1, 2)
     if(bossOption == 1):
-        os.sys('cls')
+        bosspatk()
+    else:
+        bossmatk()
+
+def bosspatk():
+    crit = random.randint(1, 10)
+    if(boss.stamina <=4):
+        if(boss.stamina <=1):
+            bossmatk()
+        else:
+            boss.stamina -= 2
+            batk = random.randint(math.floor((boss.patk)/2), (boss.patk))
+            if(crit == 1):
+                batk = math.ceil(batk * boss.crm)
+                print("Critical Hit!")
+                time.sleep(1)
+
+            batk-hero.pdef
+            if (batk <= 0):
+                print("The boss dealt 0 physical damage!")
+                input()
+                while(boss.stamina != boss.maxstamina):
+                    boss.stamina += 1
+                while(boss.mana != boss.maxmana):
+                    boss.mana +=1
+                heroturn()
+            else:
+                heroP.health -= batk
+                print("The boss dealt %s physical damage to %s!" % (str(batk), heroP.name))
+                input()
+
+            if(heroP.health <= 0):
+                defeat()
+            else:
+                while(boss.stamina != boss.maxstamina):
+                    boss.stamina += 1
+                while(boss.mana != boss.maxmana):
+                    boss.mana +=1
+                heroturn()
+    else:
+        #lifesteal ability (ignores armour)
+        skillChoice = random.randint(1, 4)
+        if(skillChoice == 1):
+            lifestealatk = random.randint(math.floor((boss.patk)/4), math.floor(boss.patk/2))
+            heroP.health -= lifestealatk
+            boss.health += lifestealatk
+            print("The boss drained %i from your health and gained it as health!" % lifestealatk)
+            input()
+
+            if(heroP.health <= 0):
+                defeat()
+
+            else:
+                while(boss.stamina != boss.maxstamina):
+                    boss.stamina += 1
+                while(boss.mana != boss.maxmana):
+                    boss.mana +=1
+
+                heroturn()
+
+        else:
+            boss.stamina -= 2
+            batk = random.randint(math.floor((boss.patk)/2), (boss.patk))
+            if(crit == 1):
+                batk = math.ceil(batk * boss.crm)
+                print("Critical Hit!")
+                time.sleep(1)
+
+            if ((batk - heroP.pdef) <= 0):
+                print("The boss dealt 0 physical damage!")
+                input()
+                heroturn()
+
+            heroP.health -= batk
+            print("The boss dealt %s physical damage to %s." % (str(batk), heroP.name))
+            input()
+
+            if(boss.health <= 0):
+                defeat()
+            else:
+                while(boss.stamina != boss.maxstamina):
+                    boss.stamina += 1
+                while(boss.mana != boss.maxmana):
+                    boss.mana +=1
+                heroturn()
 
 
+
+
+def bossmatk():
+    crit = random.randint(1, 10)
+    if(boss.mana <=4):
+        if(boss.mana <=1):
+            bossmatk()
+        else:
+            boss.mana -= 2
+            batk = random.randint(math.floor((boss.matk)/2), (boss.matk))
+            if(crit == 1):
+                batk = math.ceil(batk * boss.crm)
+                print("Critical Hit!")
+                time.sleep(1)
+
+            if (batk - hero.pdef <= 0):
+                print("The boss dealt 0 magic damage!")
+                input()
+                heroturn()
+
+            heroP.health -= batk
+            print("The boss dealt %s magic damage to %s!" % (str(batk), heroP.name))
+            input()
+
+            if(heroP.health <= 0):
+                defeat()
+            else:
+                while(boss.stamina != boss.maxstamina):
+                    boss.stamina += 1
+                while(boss.mana != boss.maxmana):
+                    boss.mana +=1
+                heroturn()
+    else:
+        skillChoice = random.randint(1, 7)
+        if(skillChoice == 1):
+        #attacks multiple times (unable to critical hit)
+            amtshots = random.randint(1, 5)
+            if(amtshots == 1):
+                batk = random.randint(math.floor((boss.matk)/2), (boss.matk))
+                batk -= hero.mdef
+                heroP.health -= batk
+                print("%s fired bolts at you %i times and dealt %i damage!" % (boss.name, amtshots, batk))
+                input()
+            elif(amtshots == 2):
+                batk = random.randint(math.floor((boss.matk)/2), (boss.matk))
+                batk = batk * 2
+                batk -= hero.mdef
+                heroP.health -= batk
+                print("%s fired bolts at you %i times and dealt %i damage!" % (boss.name, amtshots, batk))
+                input()
+
+            elif(amtshots == 3):
+                batk = random.randint(math.floor((boss.matk)/2), (boss.matk))
+                batk = batk * 3
+                batk -= hero.mdef
+                heroP.health -= batk
+                print("%s fired bolts at you %i times and dealt %i damage!" % (boss.name, amtshots, batk))
+                input()
+
+            elif(amtshots == 4):
+                batk = random.randint(math.floor((boss.matk)/2), (boss.matk))
+                batk = batk * 4
+                batk -= hero.mdef
+                heroP.health -= batk
+                print("%s fired bolts at you %i times and dealt %i damage!" % (boss.name, amtshots, batk))
+                input()
+
+            else:
+                batk = random.randint(math.floor((boss.matk)/2), (boss.matk))
+                batk = batk * 5
+                batk -= hero.mdef
+                heroP.health -= batk
+                print("%s fired bolts at you %i times and dealt %i damage!" % (boss.name, amtshots, batk))
+                input()
+
+
+            if(heroP.health <= 0):
+                    defeat()
+
+            else:
+                while(boss.stamina != boss.maxstamina):
+                        boss.stamina += 1
+                while(boss.mana != boss.maxmana):
+                        boss.mana +=1
+
+                heroturn()
+
+        else:
+            boss.mana -= 2
+            batk = random.randint(math.floor((boss.matk)/2), (boss.matk))
+            if(crit == 1):
+                batk = math.ceil(batk * boss.crm)
+                print("Critical Hit!")
+                input()
+                time.sleep(1)
+
+            batk -= heroP.mdef
+
+            if (batk <= 0):
+                print("The boss dealt 0 physical damage!")
+                input()
+                heroturn()
+
+            heroP.health -= batk
+            print("The boss dealt %s physical damage to %s" % (str(batk), heroP.name))
+            input()
+
+            if(boss.health <= 0):
+                defeat()
+            else:
+                while(boss.stamina != boss.maxstamina):
+                    boss.stamina += 1
+                while(boss.mana != boss.maxmana):
+                    boss.mana +=1
+                heroturn()
 
 
 def victory():
     os.system('cls')
     print("Well done! You have defeated the %s!" % boss.name)
     print("Now do it again.")
+    option = input()
+    prefight()
+
+def defeat():
+    os.system('cls')
+    print("You lost! You failed to defeat the %s which had %i health remaining!" % (boss.name, boss.health))
+    time.sleep(1)
+    print("You will now try again.")
     option = input()
     prefight()
 
