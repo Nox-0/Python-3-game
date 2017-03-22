@@ -15,7 +15,7 @@ class hero:
         self.maxmana = 20
         self.mana = self.maxmana
         self.weak = "matk"
-        self.patk = 35
+        self.patk = 40
         self.matk = 25
         self.crm = 1.1
         self.pdef = 10
@@ -143,10 +143,15 @@ def heropatk():
         if(boss.health <= 0):
             victory()
         else:
+            while(heroP.stamina != heroP.maxstamina):
+                heroP.stamina += 1
+            while(heroP.mana != heroP.maxmana):
+                heroP.mana +=1
             bossturn()
 
 
 def heromatk():
+    hero.mana -= 2
     crit = random.randint(1, 5)
     hatk = random.randint(math.floor(heroP.matk/2), (heroP.matk))
     if(boss.weak == "matk"):
@@ -173,6 +178,10 @@ def heromatk():
         if(boss.health <= 0):
             victory()
         else:
+            while(boss.stamina != boss.maxstamina):
+                heroP.stamina += 1
+            while(boss.mana != boss.maxmana):
+                heroP.mana +=1
             bossturn()
 
 def herodef():
@@ -197,7 +206,7 @@ def bossturn():
     bossOption = random.randint(1, 2)
     if(bossOption == 1):
         bosspatk()
-    else:
+    elif(bossOption == 2):
         bossmatk()
 
 def bosspatk():
@@ -273,7 +282,7 @@ def bosspatk():
             print("The boss dealt %s physical damage to %s." % (str(batk), heroP.name))
             input()
 
-            if(boss.health <= 0):
+            if(heroP.health <= 0):
                 defeat()
             else:
                 while(boss.stamina != boss.maxstamina):
@@ -283,10 +292,8 @@ def bosspatk():
                 heroturn()
 
 
-
-
 def bossmatk():
-    crit = random.randint(1, 10)
+    crit = random.randint(1, 5)
     if(boss.mana <=4):
         if(boss.mana <=1):
             bossmatk()
@@ -316,20 +323,21 @@ def bossmatk():
                     boss.mana +=1
                 heroturn()
     else:
-        skillChoice = random.randint(1, 7)
+        skillChoice = random.randint(1, 2)
         if(skillChoice == 1):
         #attacks multiple times (unable to critical hit)
+            boss.mana -= 5
             amtshots = random.randint(1, 5)
             if(amtshots == 1):
                 batk = random.randint(math.floor((boss.matk)/2), (boss.matk))
-                batk -= hero.mdef
+                batk -= heroP.mdef
                 heroP.health -= batk
                 print("%s fired bolts at you %i times and dealt %i damage!" % (boss.name, amtshots, batk))
                 input()
             elif(amtshots == 2):
                 batk = random.randint(math.floor((boss.matk)/2), (boss.matk))
                 batk = batk * 2
-                batk -= hero.mdef
+                batk -= heroP.mdef
                 heroP.health -= batk
                 print("%s fired bolts at you %i times and dealt %i damage!" % (boss.name, amtshots, batk))
                 input()
@@ -337,7 +345,7 @@ def bossmatk():
             elif(amtshots == 3):
                 batk = random.randint(math.floor((boss.matk)/2), (boss.matk))
                 batk = batk * 3
-                batk -= hero.mdef
+                batk -= heroP.mdef
                 heroP.health -= batk
                 print("%s fired bolts at you %i times and dealt %i damage!" % (boss.name, amtshots, batk))
                 input()
@@ -345,7 +353,7 @@ def bossmatk():
             elif(amtshots == 4):
                 batk = random.randint(math.floor((boss.matk)/2), (boss.matk))
                 batk = batk * 4
-                batk -= hero.mdef
+                batk -= heroP.mdef
                 heroP.health -= batk
                 print("%s fired bolts at you %i times and dealt %i damage!" % (boss.name, amtshots, batk))
                 input()
@@ -353,7 +361,7 @@ def bossmatk():
             else:
                 batk = random.randint(math.floor((boss.matk)/2), (boss.matk))
                 batk = batk * 5
-                batk -= hero.mdef
+                batk -= heroP.mdef
                 heroP.health -= batk
                 print("%s fired bolts at you %i times and dealt %i damage!" % (boss.name, amtshots, batk))
                 input()
@@ -390,7 +398,7 @@ def bossmatk():
             print("The boss dealt %s physical damage to %s" % (str(batk), heroP.name))
             input()
 
-            if(boss.health <= 0):
+            if(heroP.health <= 0):
                 defeat()
             else:
                 while(boss.stamina != boss.maxstamina):
