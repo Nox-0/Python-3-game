@@ -34,7 +34,7 @@ class hero:
 class GoblinKing:
     def __init__(self, name):
         self.name = name
-        self.maxhealth = 200
+        self.maxhealth = 20
         self.health = self.maxhealth
         self.maxstamina = 20
         self.stamina = self.maxstamina
@@ -76,6 +76,8 @@ def prefight():
     heroP.stamina = heroP.maxstamina
     heroP.mana = heroP.maxmana
     boss.health = boss.maxhealth
+    boss.stamina = boss.maxstamina
+    boss.mana = boss.maxmana
     heroturn()
 
 def heroturn():
@@ -83,14 +85,13 @@ def heroturn():
     os.system('cls')
 
     print("%s                     vs            %s" % (heroP.name, boss.name))
-    print("Health: %d/%d                           Health: %d/%d" % (heroP.health, heroP.maxhealth, boss.health, boss.maxhealth))
+    print("Health: %d/%d                          Health: %d/%d" % (heroP.health, heroP.maxhealth, boss.health, boss.maxhealth))
     print("Stamina: %i/%i                           Stamina: %i/%i" % (heroP.stamina, heroP.maxstamina, boss.stamina, boss.maxstamina))
     print("Mana: %i/%i                              Mana: %i/%i" % (heroP.mana, heroP.maxmana, boss.mana, boss.maxmana))
     print("\n1.) Physical Attack")
     print("2.) Magic Attack")
     #new mechanic: defending. Will see a little bit down further. NOT READY YET.
     print("3.) Defend [DOESNT DO ANYTHING ATM]")
-
     print("\n0.) Run")
     #temp for testing purposes
     print("9.) Exit")
@@ -98,9 +99,18 @@ def heroturn():
 
     if(option == "1"):
         os.system('cls')
-        heropatk()
+        if(heroP.stamina <= 1):
+            print("You don't have enough stamina to use a physical attack!")
+            heroturn()
+        else:
+            heropatk()
     elif(option == "2"):
         os.system('cls')
+        if(heroP.mana <= 1):
+            print("You don't have enough stamina to use a magical attack!")
+            heroturn()
+        else:
+            heropatk()
         heromatk()
     elif(option == "3"):
         os.system('cls')
@@ -111,23 +121,28 @@ def heroturn():
     elif(option == "9"):
         os.system('cls')
         print("Goodbye.")
-        input()
         sys.exit()
     else:
         heroturn()
 
 def heropatk():
     heroP.stamina -= 2
+
+    while(heroP.stamina != heroP.maxstamina):
+        heroP.stamina += 1
+    while(heroP.mana != heroP.maxmana):
+        heroP.mana +=1
+
     crit = random.randint(1, 5)
     hatk = random.randint(math.floor((heroP.patk)/2), (heroP.patk))
     #This version weakness and crit multiplier happens after the initial damage roll.
     if(boss.weak == "patk"):
-        hatk *= 0.2
+        hatk = math.ceil((hatk*0.2))
 
     if(crit == 1):
         hatk = math.ceil((hatk+(hatk*heroP.crm)))
         print("Critical Hit!")
-        time.sleep(1)
+        input()
 
     hatk -= boss.pdef
     #This is incase the hatk is too low
@@ -136,6 +151,7 @@ def heropatk():
         input()
         bossturn()
     else:
+        hatk
         boss.health -= hatk
         print("You dealt %s damage to the %s" % (str(hatk), boss.name))
         input()
@@ -143,26 +159,29 @@ def heropatk():
         if(boss.health <= 0):
             victory()
         else:
-            while(heroP.stamina != heroP.maxstamina):
-                heroP.stamina += 1
-            while(heroP.mana != heroP.maxmana):
-                heroP.mana +=1
             bossturn()
 
 
 def heromatk():
-    hero.mana -= 2
+    heroP.mana -= 2
+
+    while(heroP.stamina != heroP.maxstamina):
+        heroP.stamina += 1
+    while(heroP.mana != heroP.maxmana):
+        heroP.mana +=1
+
     crit = random.randint(1, 5)
     hatk = random.randint(math.floor(heroP.matk/2), (heroP.matk))
+
     if(boss.weak == "matk"):
         hatk *= 0.2
         print("It's super effective!")
-        time.sleep(1)
+        input()
 
     if(crit == 1):
         hatk = math.ceil((hatk+(hatk*heroP.crm)))
         print("Critical Hit!")
-        time.sleep(1)
+        input()
 
     hatk -= boss.mdef
 
@@ -170,6 +189,7 @@ def heromatk():
         print("You dealt 0 damage!")
         input()
         bossturn()
+
     else:
         boss.health -= hatk
         print("You dealt %s damage to the %s" % (str(hatk), boss.name))
@@ -178,10 +198,6 @@ def heromatk():
         if(boss.health <= 0):
             victory()
         else:
-            while(boss.stamina != boss.maxstamina):
-                heroP.stamina += 1
-            while(boss.mana != boss.maxmana):
-                heroP.mana +=1
             bossturn()
 
 def herodef():
@@ -248,6 +264,7 @@ def bosspatk():
         #lifesteal ability (ignores armour)
         skillChoice = random.randint(1, 4)
         if(skillChoice == 1):
+            boss.mana -= 5
             lifestealatk = random.randint(math.floor((boss.patk)/4), math.floor(boss.patk/2))
             heroP.health -= lifestealatk
             boss.health += lifestealatk
